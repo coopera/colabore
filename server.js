@@ -37,8 +37,7 @@ app.post('/api', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-	console.log("Get Message Received");
-	res.send("Get Message Received");	
+	res.sendfile('./public/index.html');
 });
 
 // START THE SERVER
