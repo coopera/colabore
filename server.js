@@ -33,7 +33,7 @@ app.use(function (req, res, next) {
 
 app.post('/api', function(req, res) {
 	console.log("Post Message Received");
-	res.send("Post Message Received");	
+	res.send({text: "Post Message Received"});	
 });
 
 app.get('/', function(req, res) {
