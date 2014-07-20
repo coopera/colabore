@@ -5,6 +5,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var port = process.env.PORT || 8000;
+var request = require('request');
 
 app.use(bodyParser());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
@@ -38,6 +39,21 @@ app.post('/api', function(req, res) {
 
 app.get('/', function(req, res) {
 	res.sendfile('./public/index.html');
+});
+
+app.post('/webhooks/github', function(req, res) {
+	console.log(req.body)
+
+	request({
+	  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
+	  method: "POST",
+	  json: {
+	    text: "Se essa mensagem chegar, eh pq o webhook com o github funcionou!"
+	  }
+	}, function(error, response, body) {
+	  console.log(body);
+	  res.send(body);
+	});
 });
 
 // START THE SERVER
