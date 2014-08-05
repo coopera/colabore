@@ -3,9 +3,12 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var app = express();
 var port = process.env.PORT || 8000;
 var request = require('request');
+
+mongoose.connect('mongodb://piu:piu@mongo.onmodulus.net:27017/ryte2jaG');
 
 app.use(bodyParser());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
@@ -29,12 +32,25 @@ app.use(function (req, res, next) {
     next();
 });
 
+var GitNotifcation = mongoose.model('GitNotifcation', {
+	object : Object
+});
+
 // ROUTES
 // ==============================================
 
 app.post('/api', function(req, res) {
 	console.log("Post Message Received");
 	res.send({text: "Post Message Received"});	
+});
+
+app.get('/api/gitnotifications', function(req, res) {
+	GitNotifcation.find(function(err, notifications) {
+		if (err)
+			res.send(err)
+
+		res.json(notifications); 
+	});
 });
 
 app.get('/', function(req, res) {
@@ -53,6 +69,14 @@ app.post('/webhooks/github', function(req, res) {
 	}, function(error, response, body) {
 	  console.log(body);
 	  res.send(body);
+	});
+
+	// create a todo, information comes from AJAX request from Angular
+	GitNotifcation.create({
+		object : req.body
+	}, function(err, notification) {
+		if (err)
+			res.send(err);
 	});
 });
 
