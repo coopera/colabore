@@ -15,9 +15,6 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 app.use(function (req, res, next) {
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://gcm-layout.herokuapp.com');
-
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
@@ -57,6 +54,35 @@ app.get('/', function(req, res) {
 	res.sendfile('./public/index.html');
 });
 
+app.post('/api/git-hook', function(req, res){
+	var token = req.body.token;
+	var path = req.body.path;
+	var token_param = "token "+token;
+	var uri_param = "https://api.github.com/repos/"+path+"/hooks";
+	console.log(uri_param);
+	
+	request({
+		uri: uri_param,
+		headers: {
+			Authorization: token_param,
+			'User-Agent': "luizrogeriocn"
+		},
+		method: "POST",
+		json: {
+			name: "web",
+			active: true,
+			events: ["*"],
+			config: {
+				url: "http://colabore.herokuapp.com/webhooks/github",
+				content_type: "json"
+			}
+		}
+	}, function(error, response, body) {
+	  console.log(body);
+	  res.send(body);
+	});
+});
+
 app.post('/webhooks/github', function(req, res) {
 	console.log(req.body)
 
@@ -71,7 +97,6 @@ app.post('/webhooks/github', function(req, res) {
 	  res.send(body);
 	});
 
-	// create a todo, information comes from AJAX request from Angular
 	GitNotifcation.create({
 		object : req.body
 	}, function(err, notification) {
