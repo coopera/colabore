@@ -38,12 +38,19 @@ var GitNotifcation = mongoose.model('GitNotifcation', {
 
 app.post('/api', function(req, res) {
 	console.log("Post Message Received");
-	var cmd_regex = /:(.*):/g;
-	var text = req.body.text;
-	var cmd = cmd_regex.exec(text)[1];
-	var usr_regex = /&lt[@|!](\w*)&gt/g;
-	var usr = usr_regex.exec(text)[1];
-	res.send({text: "Comando: "+cmd+"\nPara: <@"+usr+">"});
+	//var cmd_regex = /:(.*):/g;
+	//var text = req.body.text;
+	//var cmd = cmd_regex.exec(text)[1];
+	//var usr_regex = /&lt[@|!](\w*)&gt/g;
+	//var usr = usr_regex.exec(text)[1];
+	//res.send({text: "Comando: "+cmd+"\nPara: <@"+usr+">"});
+	res.send({text: "ok"});
+	GitNotifcation.create({
+		object : req.body
+	}, function(err, notification) {
+		if (err)
+			res.send(err);
+	});
 });
 
 app.get('/api/gitnotifications', function(req, res) {
