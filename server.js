@@ -43,8 +43,7 @@ app.post('/api', function(req, res) {
 	var cmd = cmd_regex.exec(text)[1];
 	var usr_regex = /&lt(\w*)&gt/g;
 	var usr = usr_regex.exec(text)[1];
-	//res.send({text: "Comando: "+cmd+"\nPara: <@"+usr+">"});
-	res.send(req.body);
+	res.send({text: "Comando: "+cmd+"\nPara: <@"+usr+">"});
 });
 
 app.get('/api/gitnotifications', function(req, res) {
