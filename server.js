@@ -41,7 +41,7 @@ app.post('/api', function(req, res) {
 	var cmd_regex = /:(.*):/g;
 	var text = req.body.text;
 	var cmd = cmd_regex.exec(text)[1];
-	var usr_regex = /&lt(\w*)&gt/g;
+	var usr_regex = /&lt[@|!](\w*)&gt/g;
 	var usr = usr_regex.exec(text)[1];
 	res.send({text: "Comando: "+cmd+"\nPara: <@"+usr+">"});
 });
