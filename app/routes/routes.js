@@ -3,15 +3,46 @@ var GitNotifcation = require('./../models/git_notification');
 module.exports = function(app) {
 
 	app.post('/api', function(req, res) {
-		console.log("Post Message Received");
+		var msg = req.body.text;
+		
+		var user_regex = /<(.*?)>/g;
 		var cmd_regex = /:([^:]*):/g;
-		var text = req.body.text;
-		var cmd = cmd_regex.exec(text)[1];
-		var usr_regex = /<[@|!](.*)>/g;
-		var p_user_regex = /<(\W).*>/g
-		var p_user = p_user_regex.exec(text)[1];
-		var usr = p_user+usr_regex.exec(text)[1];
-		res.send({text: "Comando: "+cmd+"\nPara: <"+usr+">"});
+
+		var user_results = [];
+		var m;
+
+		do{
+			m = user_regex.exec(msg);
+			if(m){
+				user_results.push(m[1]);
+			}
+		} while(m);
+
+		var user = undefined;
+		for(var i = 0; i < user_results.length; i++){
+			if(/[@|!](.*)/.exec(user_results[i]) != undefined){
+				var p_user = /(\W).*/g.exec(user_results[i])[1];
+				user = /[@|!](.*)/g.exec(user_results[i])[1];
+				user = p_user + user;
+				break;
+			}
+		}
+
+		var cmd_results = [];
+		var n;
+		do{
+			n = cmd_regex.exec(msg);
+			if(n){
+				cmd_results.push(n[1]);
+			}
+		} while(n);
+
+		var cmd = cmd_results[0];
+		
+		if((user == undefined)||(cmd == undefined))
+			res.send({text: "Mensagem inválida."});
+		else
+			res.send({text: "Comando: "+cmd+"\nPara: <"+user+">"});
 	});
 
 	app.get('/api/gitnotifications', function(req, res) {
