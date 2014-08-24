@@ -1,3 +1,4 @@
+var request = require('request');
 var GitNotifcation = require('./../models/git_notification');
 
 module.exports = function(app) {
