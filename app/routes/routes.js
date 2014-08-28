@@ -96,13 +96,13 @@ module.exports = function(app) {
 	app.post('/webhooks/github', function(req, res) {
 		console.log(req.body);
 		var time_now = new Date();
-		var name = req.headers.event_name;
+		var headers = req.headers;
 
 		request({
 		  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
 		  method: "POST",
 		  json: {
-		    text: "Se essa mensagem chegar, eh pq o webhook com o github funcionou!"
+		    text: headers
 		  }
 		}, function(error, response, body) {
 		  console.log(body);
