@@ -96,7 +96,7 @@ module.exports = function(app) {
 	app.post('/webhooks/github', function(req, res) {
 		console.log(req.body);
 		var time_now = new Date();
-		var name = req.headers.x-github-event;
+		var name = req.headers['x-github-event'];
 
 		request({
 		  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
