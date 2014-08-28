@@ -55,6 +55,11 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/api/teste', function(req, res) {
+		console.log(req.headers.connection);
+		res.send("ok");
+	});
+
 	app.get('/', function(req, res) {
 		res.sendfile('./public/index.html');
 	});
@@ -89,7 +94,9 @@ module.exports = function(app) {
 	});
 
 	app.post('/webhooks/github', function(req, res) {
-		console.log(req.body)
+		console.log(req.body);
+		var time_now = new Date();
+		var name = req.headers.event_name;
 
 		request({
 		  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
@@ -103,7 +110,9 @@ module.exports = function(app) {
 		});
 
 		GitNotifcation.create({
-			object : req.body
+			object : req.body,
+			event_time: time_now,
+			event_name: name
 		}, function(err, notification) {
 			if (err)
 				res.send(err);

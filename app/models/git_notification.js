@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 var git_notification_schema = new Schema({
 	event_name : String,
+	event_time: Date,
 	object : Object
 });
 
