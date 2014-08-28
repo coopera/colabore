@@ -112,7 +112,7 @@ module.exports = function(app) {
 		GitNotifcation.create({
 			object : req.body,
 			event_time: time_now,
-			event_name: name
+			event_name: 'oi'+name
 		}, function(err, notification) {
 			if (err)
 				res.send(err);
