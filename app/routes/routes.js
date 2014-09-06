@@ -57,7 +57,6 @@ module.exports = function(app) {
 
 	app.get('/api/teste', function(req, res) {
 		console.log(req.headers.connection);
-		res.send("ok");
 	});
 
 	app.get('/', function(req, res) {
@@ -97,12 +96,13 @@ module.exports = function(app) {
 		console.log(req.body);
 		var time_now = new Date();
 		var name = req.headers['x-github-event'];
+		var id = req.headers['x-github-delivery'];
 
 		request({
 		  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
 		  method: "POST",
 		  json: {
-		    text: 'Tipo de evento: '+name
+		    text: 'Tipo de evento: '+name+'\nId do evento: '+id
 		  }
 		}, function(error, response, body) {
 		  console.log(body);
