@@ -80,7 +80,7 @@ module.exports = function(app) {
 		  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
 		  method: "POST",
 		  json: {
-		    text: 'Tipo de evento: '+name
+		    text: 'Tipo de evento: '+event_name
 		  }
 		}, function(error, response, body) {
 		  console.log(body);
