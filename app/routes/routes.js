@@ -69,6 +69,18 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/api/repos/:user/:repo/:event_name', function(req, res) {
+		var repo_name = req.params.user+'/'+req.params.repo;
+		var event_name = req.params.event_name;
+
+		GitNotifcation.find({'repo': repo_name, 'event_name': event_name}, function(err, notifications) {
+			if (err)
+				res.send(err)
+
+			res.json(notifications); 
+		});
+	});
+
 	app.post('/api/git-hook', function(req, res){
 		var token = req.body.token;
 		var path = req.body.path;
