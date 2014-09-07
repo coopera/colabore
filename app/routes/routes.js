@@ -107,7 +107,7 @@ module.exports = function(app) {
 			object : req.body,
 			event_time: time_now,
 			event_name: name,
-			repository: repo
+			repo: repo
 		}, function(err, notification) {
 			if (err)
 				res.send(err);
