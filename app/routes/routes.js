@@ -55,12 +55,18 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/api/teste', function(req, res) {
-		console.log(req.headers.connection);
-	});
-
 	app.get('/', function(req, res) {
 		res.sendfile('./public/index.html');
+	});
+
+	app.get('/api/repos/:user/:repo', function(req, res) {
+		var repo_name = req.params.user+'/'+req.params.repo;
+		GitNotifcation.find({'repo': repo_name}, function(err, notifications) {
+			if (err)
+				res.send(err)
+
+			res.json(notifications); 
+		});
 	});
 
 	app.post('/api/git-hook', function(req, res){
@@ -93,29 +99,30 @@ module.exports = function(app) {
 	});
 
 	app.post('/webhooks/github', function(req, res) {
-		console.log(req.body);
 		var time_now = new Date();
 		var name = req.headers['x-github-event'];
-		var id = req.headers['x-github-delivery'];
-
-		request({
-		  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
-		  method: "POST",
-		  json: {
-		    text: 'Tipo de evento: '+name+'\nId do evento: '+id
-		  }
-		}, function(error, response, body) {
-		  console.log(body);
-		  res.send(body);
-		});
+		var repo = req.body.repository.full_name;
 
 		GitNotifcation.create({
 			object : req.body,
 			event_time: time_now,
-			event_name: name
+			event_name: name,
+			repository: repo
 		}, function(err, notification) {
 			if (err)
 				res.send(err);
 		});
+
+		//notificar slack
+		request({
+		  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
+		  method: "POST",
+		  json: {
+		    text: 'Tipo de evento: '+name
+		  }
+		}, function(error, response, body) {
+		  console.log(body);
+		  res.send(body);
+		});	
 	});
 }
