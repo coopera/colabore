@@ -2,10 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var port = process.env.PORT || 8000;
-var request = require('request');
 var mongoose = require('mongoose');
 var dbconfig = require('./config/database');
-
 
 //database connection
 mongoose.connect(dbconfig.url, dbconfig.connectionHandler);
