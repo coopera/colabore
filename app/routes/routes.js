@@ -1,5 +1,6 @@
 var request = require('request');
 var GitNotifcation = require('./../models/git_notification');
+var SlackNotifcation = require('./../models/slack_notification');
 
 module.exports = function(app) {
 
@@ -22,6 +23,16 @@ module.exports = function(app) {
 		var event_name = req.params.event_name;
 
 		GitNotifcation.find({'repo': repo_name, 'event_name': event_name}, function(err, notifications) {
+			if (err)
+				res.send(err)
+
+			res.json(notifications); 
+		});
+	});
+
+	app.get('/api/teams/:team_id', function(req, res) {
+		var team_id = req.params.team_id;
+		SlackNotifcation.find({'team_id': team_id}, function(err, notifications) {
 			if (err)
 				res.send(err)
 
@@ -88,28 +99,28 @@ module.exports = function(app) {
 		});	
 	});
 
-	app.post('/api', function(req, res) {
+	app.post('/webhooks/slack', function(req, res) {
 		var msg = req.body.text;
 		
-		var user_regex = /<(.*?)>/g;
+		var recipient_regex = /<(.*?)>/g;
 		var cmd_regex = /:([^:]*):/g;
 
-		var user_results = [];
+		var recipient_results = [];
 		var m;
 
 		do{
-			m = user_regex.exec(msg);
+			m = recipient_regex.exec(msg);
 			if(m){
-				user_results.push(m[1]);
+				recipient_results.push(m[1]);
 			}
 		} while(m);
 
-		var user = undefined;
-		for(var i = 0; i < user_results.length; i++){
-			if(/[@|!](.*)/.exec(user_results[i]) != undefined){
-				var p_user = /(\W).*/g.exec(user_results[i])[1];
-				user = /[@|!](.*)/g.exec(user_results[i])[1];
-				user = p_user + user;
+		var recipient = undefined;
+		for(var i = 0; i < recipient_results.length; i++){
+			if(/[@|!](.*)/.exec(recipient_results[i]) != undefined){
+				var p_recipient = /(\W).*/g.exec(recipient_results[i])[1];
+				recipient = /[@|!](.*)/g.exec(recipient_results[i])[1];
+				recipient = p_recipient + recipient;
 				break;
 			}
 		}
@@ -124,11 +135,28 @@ module.exports = function(app) {
 		} while(n);
 
 		var cmd = cmd_results[0];
-		
-		if((user == undefined)||(cmd == undefined))
+
+		//salvar evento e enviar feedback ao slack
+		var team_id = req.body.team_id;
+		var user_id = req.body.user_id;
+		var time_now = new Date();
+
+		if((recipient == undefined)||(cmd == undefined))
 			res.send({text: "Mensagem inválida."});
 		else
-			res.send({text: "Comando: "+cmd+"\nPara: <"+user+">"});
+			SlackNotifcation.create({
+				team_id				: team_id,
+				user_id				: user_id,
+				event_action 		: cmd,
+				event_recipient		: recipient,
+				object				: req.body,
+				event_time			: time_now,
+			}, function(err, notification) {
+				if (err)
+					res.send(err);
+			});
+
+			res.send({text: "Comando: "+cmd+"\nPara: <"+recipient+">"});
 	});
 
 	app.get('/api/gitnotifications', function(req, res) {
