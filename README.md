@@ -1,4 +1,4 @@
-##An API that allows you to create Github webhooks and listen for incoming events from the watched repositories.
+##An API that allows you to track all of your team events!
 This application will receive and store incoming messages from external services. It tries to centralize events from several tools in one place, aiming to simplify the team management and awareness.
 
 
