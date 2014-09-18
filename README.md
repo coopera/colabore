@@ -18,6 +18,8 @@ This application will receive and store incoming messages from external services
 - Triggers the creation of a Github webhook to receive all events form the given repository.
 
 #####Parameters
-- __path:__ Repository's path on github, e.g., ':user/:repo'.
-- __token:__ Oauth token with webhook __read__ rights to __repos__ and __orgs__.
+| __Name__      | __Type__      | __Description__  
+| ------------- |:-------------:| -----:|
+| path      | string | Repository's path on github, e.g., ':user/:repo'.
+| token     | string | Oauth token with webhook __read__ rights to __repos__ and __orgs__.
 
