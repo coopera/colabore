@@ -19,7 +19,7 @@ This application will receive and store incoming messages from external services
 
 #####Parameters
 | __Name__      | __Type__      | __Description__  
-| ------------- |:-------------:| -----:|
+| ------------- |:-------------:|:-----:|
 | path      | string | Repository's path on github, e.g., ':user/:repo'.
 | token     | string | Oauth token with webhook __read__ rights to __repos__ and __orgs__.
 
