@@ -167,4 +167,13 @@ module.exports = function(app) {
 			res.json(notifications); 
 		});
 	});
+
+	app.get('/api/slacknotifications', function(req, res) {
+		SlackNotifcation.find(function(err, notifications) {
+			if (err)
+				res.send(err)
+
+			res.json(notifications); 
+		});
+	});
 }
