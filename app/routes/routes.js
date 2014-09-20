@@ -1,6 +1,8 @@
 var request = require('request');
 var GitNotifcation = require('./../models/git_notification');
 var SlackNotifcation = require('./../models/slack_notification');
+var slack_helper = require('./../services/slack_helper');
+var github_helper = require('./../services/github_helper');
 
 module.exports = function(app) {
 
@@ -70,18 +72,9 @@ module.exports = function(app) {
 	});
 
 	app.post('/webhooks/github', function(req, res) {
-		var time_now = new Date();
-		var event_name = req.headers['x-github-event'];
-		var repo = req.body.repository.full_name;
-		var actor = (req.body.pusher.name || req.body.sender.login);
+		var github = github_helper(req);
 
-		GitNotifcation.create({
-			repo		: repo,
-			actor		: actor,
-			event_name	: event_name,
-			event_time	: time_now,
-			object		: req.body,
-		}, function(err, notification) {
+		GitNotifcation.create(github, function(err, notification) {
 			if (err)
 				res.send(err);
 		});
@@ -91,72 +84,27 @@ module.exports = function(app) {
 		  uri: "https://colabore.slack.com/services/hooks/incoming-webhook?token=UFqe6mu7euTJPHHMGXJe7r3F",
 		  method: "POST",
 		  json: {
-		    text: 'Tipo de evento: '+event_name
+		    text: 'Tipo de evento: '+github.event_name
 		  }
 		}, function(error, response, body) {
 		  console.log(body);
 		  res.send(body);
-		});	
+		});
 	});
 
 	app.post('/webhooks/slack', function(req, res) {
-		var msg = req.body.text;
-		
-		var recipient_regex = /<(.*?)>/g;
-		var cmd_regex = /:([^:]*):/g;
-
-		var recipient_results = [];
-		var m;
-
-		do{
-			m = recipient_regex.exec(msg);
-			if(m){
-				recipient_results.push(m[1]);
-			}
-		} while(m);
-
-		var recipient = undefined;
-		for(var i = 0; i < recipient_results.length; i++){
-			if(/[@|!](.*)/.exec(recipient_results[i]) != undefined){
-				var p_recipient = /(\W).*/g.exec(recipient_results[i])[1];
-				recipient = /[@|!](.*)/g.exec(recipient_results[i])[1];
-				recipient = p_recipient + recipient;
-				break;
-			}
-		}
-
-		var cmd_results = [];
-		var n;
-		do{
-			n = cmd_regex.exec(msg);
-			if(n){
-				cmd_results.push(n[1]);
-			}
-		} while(n);
-
-		var cmd = cmd_results[0];
-
+		var slack = slack_helper(req);
 		//salvar evento e enviar feedback ao slack
-		var team_id = req.body.team_id;
-		var user_id = req.body.user_id;
-		var time_now = new Date();
-
-		if((recipient == undefined)||(cmd == undefined))
-			res.send({text: "Mensagem inválida."});
-		else
-			SlackNotifcation.create({
-				team_id				: team_id,
-				user_id				: user_id,
-				event_action 		: cmd,
-				event_recipient		: recipient,
-				object				: req.body,
-				event_time			: time_now,
-			}, function(err, notification) {
+		if(slack.event_action){
+			SlackNotifcation.create(slack, function(err, notification) {
 				if (err)
 					res.send(err);
 			});
 
-			res.send({text: "Comando: "+cmd+"\nPara: <"+recipient+">"});
+			res.send({text: "Comando: "+slack.event_action+"\nPara: <"+slack.event_recipient+">"});
+		}
+		else
+			res.send({text: "Mensagem inválida."});
 	});
 
 	app.get('/api/gitnotifications', function(req, res) {
