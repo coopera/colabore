@@ -2,7 +2,7 @@ var github_helper = function(req){
 	var time_now = new Date();
 	var event_name = req.headers['x-github-event'];
 	var repo = req.body.repository.full_name;
-	var actor = (req.body.pusher.name || req.body.sender.login);
+	var actor = (req.body.sender.login);
 
 	return {
 		repo		: repo,
