@@ -8,11 +8,11 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name : ['TT-Node'],
+  app_name : ['TeamTracker'],
   /**
    * Your New Relic license key.
    */
-  license_key : '21ec83108edd0ec508a0225434b73371e56dfdbb',
+  license_key : '734e0873e208a12bf2f4ca1eeab4bcade27697a6',
   logging : {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
