@@ -6,6 +6,10 @@ var port = process.env.PORT || 8000;
 var mongoose = require('mongoose');
 var dbconfig = require('./config/database');
 
+var args = process.argv.slice(2);
+if((args[0] == '-p') && (!process.env.PORT))
+	port = args[1];
+
 //database connection
 mongoose.connect(dbconfig.url, dbconfig.connectionHandler);
 
