@@ -16,3 +16,6 @@
 {"name":"newrelic","hostname":"latitude","pid":3266,"level":30,"msg":"Starting New Relic for Node.js connection process.","time":"2014-11-04T18:20:10.793Z","v":0}
 {"name":"newrelic","hostname":"latitude","pid":3266,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/808080/applications/4187913","time":"2014-11-04T18:20:12.419Z","v":0}
 {"name":"newrelic","hostname":"latitude","pid":3266,"component":"collector_api","level":30,"msg":"Connected to collector-111.newrelic.com:443 with agent run ID 1584001754.","time":"2014-11-04T18:20:12.422Z","v":0}
+{"name":"newrelic","hostname":"latitude","pid":3527,"level":30,"msg":"Starting New Relic for Node.js connection process.","time":"2014-11-04T18:27:09.062Z","v":0}
+{"name":"newrelic","hostname":"latitude","pid":3527,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/808080/applications/4187913","time":"2014-11-04T18:27:10.634Z","v":0}
+{"name":"newrelic","hostname":"latitude","pid":3527,"component":"collector_api","level":30,"msg":"Connected to collector-111.newrelic.com:443 with agent run ID 1584012863.","time":"2014-11-04T18:27:10.634Z","v":0}

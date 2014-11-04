@@ -113,11 +113,11 @@ module.exports = function(app) {
 				res.send(err)
 
 			res.json(notifications); 
-		}, {__v: 0});
+		});
 	});
 
 	app.get('/api/slacknotifications', function(req, res) {
-		SlackNotifcation.find(function(err, notifications) {
+		SlackNotifcation.find({function(err, notifications) {
 			if (err)
 				res.send(err)
 
