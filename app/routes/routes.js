@@ -111,7 +111,6 @@ module.exports = function(app) {
 		GitNotifcation.find(function(err, notifications) {
 			if (err)
 				res.send(err)
-
 			res.json(notifications); 
 		});
 	});
@@ -120,7 +119,6 @@ module.exports = function(app) {
 		SlackNotifcation.find(function(err, notifications) {
 			if (err)
 				res.send(err)
-
 			res.json(notifications); 
 		});
 	});
