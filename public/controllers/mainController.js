@@ -2,7 +2,7 @@ var teamtracker = angular.module('teamtracker', []);
 
 function mainController($scope, $http) {
 
-    $http.get('http://localhost:8000/api/gitnotifications')
+    $http.get('http://colabore.herokuapp.com/api/gitnotifications')
       .success(function(data) {
         $scope.notifications = data;
         $scope.notifications.reverse();
