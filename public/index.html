@@ -2,7 +2,7 @@
 <!doctype html>
 
 <!-- ASSIGN OUR ANGULAR MODULE -->
-<html>
+<html ng-app="teamtracker">
 <head>
 	<!-- META -->
 	<meta charset="utf-8">
@@ -17,14 +17,9 @@
 		body 					{ padding-top:50px; }
 	</style>
 
-	<!-- SPELLS -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
-	<script src="core.js"></script>
-
 </head>
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
-<body>
+<body ng-controller="mainController">
 	<div class="container">
 
 		<!-- HEADER AND TODO COUNT -->
@@ -32,7 +27,38 @@
 			<h1>TEAMTRACKER :D <span class="label label-info"></span></h1>
 		</div>
 
+		<div id="bus-list" class="row">
+            <div class="col-sm-12">
+
+                <!-- LOOP OVER THE BUSES IN $scope.buses -->
+                <div>
+                	<label>Geral: <input ng-model="search.$"></label>
+                	<label>Repositório: <input ng-model="search.repo"></label>
+                	<label>Ator: <input ng-model="search.actor"></label>
+                	<label>Evento: <input ng-model="search.event_name"></label>
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>Repositório</th>
+                            <th>Usuário</th>
+                            <th>Evento</th>
+                            <th>Horário</th>
+                        </tr>
+                        <tr ng-repeat="notification in notifications | filter:search:strict">
+                            <td>{{notification.repo}}</td>
+                            <td>{{notification.actor}}</td>
+                            <td>{{notification.event_name}}</td>
+                            <td>{{notification.event_time}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
 	</div>
 
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+	<script src="/controllers/mainController.js"></script>
 </body>
 </html>

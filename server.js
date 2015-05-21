@@ -14,6 +14,7 @@ if((args[0] == '-p') && (!process.env.PORT))
 mongoose.connect(dbconfig.url, dbconfig.connectionHandler);
 
 //config
+app.use(express.static('public'));
 app.use(bodyParser());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(function (req, res, next) {
