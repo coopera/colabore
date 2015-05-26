@@ -90,15 +90,15 @@
                 	<label>Geral: <input ng-model="search.$"></label>
                     <br>
                 	<label>
-                        Repositório 
-                        <a ng-show="repo == true" ng-click="repo = false">(Esconder)</a> 
-                        <a ng-show="repo == false" ng-click="repo = true">(Mostrar)</a>:
+                        Repositório:
+                        <a ng-show="repo == true" ng-click="repo = false; search.repo = '' ">(Esconder)</a> 
+                        <a ng-show="repo == false" ng-click="repo = true">(Mostrar)</a>
                         <input ng-model="search.repo">
                     </label>
                     <br>
                 	<label>
                         Ator 
-                        <a ng-show="gh_user == true" ng-click="gh_user = false">(Esconder)</a> 
+                        <a ng-show="gh_user == true" ng-click="gh_user = false; search.actor = '' ">(Esconder)</a> 
                         <a ng-show="gh_user == false" ng-click="gh_user = true">(Mostrar)</a>:
                         <input ng-model="search.actor">
                     </label>
@@ -106,7 +106,7 @@
                     <label>
                         Evento 
                         <a ng-show="event == false" ng-click="event = true">(Mostrar)</a> 
-                        <a ng-show="event == true" ng-click="event = false">(Esconder)</a>: 
+                        <a ng-show="event == true" ng-click="event = false; search.event_name = '' ">(Esconder)</a>: 
                         <input ng-model="search.event_name">
                     </label>
                     <br>
@@ -144,21 +144,21 @@
                     <label>
                         Time:
                         <a ng-show="team == false" ng-click="team = true">(Mostrar)</a> 
-                        <a ng-show="team == true" ng-click="team = false">(Esconder)</a>:
+                        <a ng-show="team == true" ng-click="team = false; searchSlack.team_domain = '' ">(Esconder)</a>:
                         <input ng-model="searchSlack.team_domain">
                     </label>
                     <br>
                     <label>
                         Usuário:
                         <a ng-show="slack_user == false" ng-click="slack_user = true">(Mostrar)</a> 
-                        <a ng-show="slack_user == true" ng-click="slack_user = false">(Esconder)</a>:
+                        <a ng-show="slack_user == true" ng-click="slack_user = false; searchSlack.user_name = '' ">(Esconder)</a>:
                         <input ng-model="searchSlack.user_name">
                     </label>
                     <br>
                     <label>
                         Ação: 
                         <a ng-show="action == false" ng-click="action = true">(Mostrar)</a> 
-                        <a ng-show="action == true" ng-click="action = false">(Esconder)</a>:
+                        <a ng-show="action == true" ng-click="action = false; searchSlack.event_action = '' ">(Esconder)</a>:
                         <input ng-model="searchSlack.event_action">
                     </label>
                     <br>

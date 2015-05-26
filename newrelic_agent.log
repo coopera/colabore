@@ -131,3 +131,6 @@
 {"name":"newrelic","hostname":"lucasbibiano-Inspiron-N4030","pid":3956,"level":30,"msg":"Starting New Relic for Node.js connection process.","time":"2015-05-26T12:43:44.527Z","v":0}
 {"name":"newrelic","hostname":"lucasbibiano-Inspiron-N4030","pid":3956,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/808080/applications/4187913","time":"2015-05-26T12:43:46.667Z","v":0}
 {"name":"newrelic","hostname":"lucasbibiano-Inspiron-N4030","pid":3956,"component":"collector_api","level":30,"msg":"Connected to collector-111.newrelic.com:443 with agent run ID 255649270.","time":"2015-05-26T12:43:46.668Z","v":0}
+{"name":"newrelic","hostname":"roger.local","pid":41758,"level":30,"msg":"Starting New Relic for Node.js connection process.","time":"2015-05-26T15:32:40.763Z","v":0}
+{"name":"newrelic","hostname":"roger.local","pid":41758,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/808080/applications/4187913","time":"2015-05-26T15:32:42.583Z","v":0}
+{"name":"newrelic","hostname":"roger.local","pid":41758,"component":"collector_api","level":30,"msg":"Connected to collector-111.newrelic.com:443 with agent run ID 256237537.","time":"2015-05-26T15:32:42.583Z","v":0}
