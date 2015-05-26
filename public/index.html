@@ -50,6 +50,25 @@
                             <td>{{notification.event_time | date:"dd/MM/yyyy 'às' h:mma"}}</td>
                         </tr>
                     </table>
+                   <hr/>
+                    <label>Geral: <input ng-model="searchSlack.$"></label>
+                    <label>Time: <input ng-model="searchSlack.team_domain"></label>
+                    <label>Usuário: <input ng-model="searchSlack.user_name"></label>
+                    <label>Ação: <input ng-model="searchSlack.event_action"></label>
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>Time</th>
+                            <th>Usuário</th>
+                            <th>Ação</th>
+                            <th>Horário</th>
+                        </tr>
+                        <tr ng-repeat="slacknotification in slacknotifications | filter:searchSlack:strict">
+                            <td>{{slacknotification.team_domain}}</td>
+                            <td>{{slacknotification.user_name}}</td>
+                            <td>{{slacknotification.event_action}}</td>
+                            <td>{{slacknotification.event_time | date:"dd/MM/yyyy 'às' h:mma"}}</td>
+                        </tr>
+                    </table>
                 </div>
 
             </div>

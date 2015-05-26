@@ -12,4 +12,17 @@ function mainController($scope, $http) {
       .error(function(data) {
         console.log('Error: ' + data);
       });
+
+      $http.get('http://colabore.herokuapp.com/api/slacknotifications')
+      .success(function(data) {
+        $scope.slacknotifications = data;
+        $scope.slacknotifications.reverse();
+        for(i = 0; i < $scope.slacknotifications.length; i++){
+          $scope.slacknotifications[i]['user_name'] = $scope.slacknotifications[i].object.user_name;
+          $scope.slacknotifications[i]['team_domain'] = $scope.slacknotifications[i].object.team_domain;
+        };
+      })
+      .error(function(data) {
+        console.log('Error: ' + data);
+      });
 }

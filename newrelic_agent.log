@@ -122,3 +122,6 @@
 {"name":"newrelic","hostname":"roger","pid":18357,"level":30,"msg":"Starting New Relic for Node.js connection process.","time":"2015-05-21T18:43:35.154Z","v":0}
 {"name":"newrelic","hostname":"roger","pid":18357,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/808080/applications/4187913","time":"2015-05-21T18:43:38.196Z","v":0}
 {"name":"newrelic","hostname":"roger","pid":18357,"component":"collector_api","level":30,"msg":"Connected to collector-111.newrelic.com:443 with agent run ID 233841407.","time":"2015-05-21T18:43:38.197Z","v":0}
+{"name":"newrelic","hostname":"roger.local","pid":32122,"level":30,"msg":"Starting New Relic for Node.js connection process.","time":"2015-05-26T03:33:36.954Z","v":0}
+{"name":"newrelic","hostname":"roger.local","pid":32122,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/808080/applications/4187913","time":"2015-05-26T03:33:38.822Z","v":0}
+{"name":"newrelic","hostname":"roger.local","pid":32122,"component":"collector_api","level":30,"msg":"Connected to collector-111.newrelic.com:443 with agent run ID 253810225.","time":"2015-05-26T03:33:38.822Z","v":0}
