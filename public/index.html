@@ -15,11 +15,67 @@
 	<style>
 		html 					{ overflow-y:scroll; }
 		body 					{ padding-top:50px; }
+        th.tablesort-sortable {
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        table .tablesort-sortable:after{
+            content:"";
+            float:right;
+            margin-top:7px;
+            visibility:hidden;
+            border-left:4px solid transparent;
+            border-right:4px solid transparent;
+
+            border-top:none;
+            border-bottom:4px solid #000;
+        }
+
+        table .tablesort-desc:after{
+            border-top:4px solid #000;
+            border-bottom:none;
+        }
+
+        table .tablesort-asc,table .tablesort-desc{
+            background-color:rgba(141, 192, 219, 0.25);
+        }
+
+        table .tablesort-sortable:hover:after, table .tablesort-asc:after, table .tablesort-desc:after {
+            visibility:visible;
+        }
+
+        /*
+         * Styling for the table row shown in empty tables
+         */
+
+        /* The row is always added as the first row in a table
+           Hide it by default */
+        .showIfLast {
+            display: none;
+        }
+
+        /* Only show it if it is also the last row of the table. */
+        .showIfLast:last-child {
+            display: table-row;
+        }
+
+        .showIfLast td {
+            text-align: center;
+        }
+
+        .showIfLast td:after {
+            content: "No data";
+        }
 	</style>
 
 </head>
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
-<body ng-controller="mainController">
+<body ng-controller="mainController" ng-init="repo = true; gh_user = true; event = true; hour = true; slack_time = true; action = true; slack_user = true; team = true">
 	<div class="container">
 
 		<!-- HEADER AND TODO COUNT -->
@@ -30,44 +86,107 @@
 		<div id="bus-list" class="row">
             <div class="col-sm-12">
 
-                <!-- LOOP OVER THE BUSES IN $scope.buses -->
                 <div>
                 	<label>Geral: <input ng-model="search.$"></label>
-                	<label>Repositório: <input ng-model="search.repo"></label>
-                	<label>Ator: <input ng-model="search.actor"></label>
-                	<label>Evento: <input ng-model="search.event_name"></label>
-                    <table class="table table-bordered table-hover">
+                    <br>
+                	<label>
+                        Repositório 
+                        <a ng-show="repo == true" ng-click="repo = false">(Esconder)</a> 
+                        <a ng-show="repo == false" ng-click="repo = true">(Mostrar)</a>:
+                        <input ng-model="search.repo">
+                    </label>
+                    <br>
+                	<label>
+                        Ator 
+                        <a ng-show="gh_user == true" ng-click="gh_user = false">(Esconder)</a> 
+                        <a ng-show="gh_user == false" ng-click="gh_user = true">(Mostrar)</a>:
+                        <input ng-model="search.actor">
+                    </label>
+                    <br>
+                    <label>
+                        Evento 
+                        <a ng-show="event == false" ng-click="event = true">(Mostrar)</a> 
+                        <a ng-show="event == true" ng-click="event = false">(Esconder)</a>: 
+                        <input ng-model="search.event_name">
+                    </label>
+                    <br>
+                	<label>
+                        Horário 
+                        <a ng-show="hour == false" ng-click="hour = true">(Mostrar)</a> 
+                        <a ng-show="hour == true" ng-click="hour = false">(Esconder)</a>:  
+                        <input ng-model="search.event_time">
+                    </label>
+                    <br>
+                    <h3>Quantidade: {{(notifications | filter:search:strict).length}} </h3>
+                    <table class="table table-bordered table-hover" ts-wrapper>
+                        <thead>
                         <tr>
-                            <th>Repositório</th>
-                            <th>Usuário</th>
-                            <th>Evento</th>
-                            <th>Horário</th>
+                            <th ts-criteria="repo" ng-hide="repo == false">Repositório</th>
+                            <th ts-criteria="actor" ng-hide="gh_user == false">Usuário</th>
+                            <th ts-criteria="event_name" ng-hide="event == false">Evento</th>
+                            <th ts-criteria="event_time" ng-hide="hour == false">Horário</th>
                         </tr>
-                        <tr ng-repeat="notification in notifications | filter:search:strict">
-                            <td>{{notification.repo}}</td>
-                            <td>{{notification.actor}}</td>
-                            <td>{{notification.event_name}}</td>
-                            <td>{{notification.event_time | date:"dd/MM/yyyy 'às' h:mma"}}</td>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="notification in notifications | filter:search:strict" ts-repeat>
+                            <td ng-hide="repo == false">{{notification.repo}}</td>
+                            <td ng-hide="gh_user == false">{{notification.actor}}</td>
+                            <td ng-hide="event == false">{{notification.event_name}}</td>
+                            <td ng-hide="hour == false">{{notification.event_time | date:"dd/MM/yyyy 'às' h:mma"}}</td>
                         </tr>
+                        </tbody>
                     </table>
                    <hr/>
-                    <label>Geral: <input ng-model="searchSlack.$"></label>
-                    <label>Time: <input ng-model="searchSlack.team_domain"></label>
-                    <label>Usuário: <input ng-model="searchSlack.user_name"></label>
-                    <label>Ação: <input ng-model="searchSlack.event_action"></label>
-                    <table class="table table-bordered table-hover">
-                        <tr>
-                            <th>Time</th>
-                            <th>Usuário</th>
-                            <th>Ação</th>
-                            <th>Horário</th>
-                        </tr>
-                        <tr ng-repeat="slacknotification in slacknotifications | filter:searchSlack:strict">
-                            <td>{{slacknotification.team_domain}}</td>
-                            <td>{{slacknotification.user_name}}</td>
-                            <td>{{slacknotification.event_action}}</td>
-                            <td>{{slacknotification.event_time | date:"dd/MM/yyyy 'às' h:mma"}}</td>
-                        </tr>
+                    <label>Geral: 
+                        <input ng-model="searchSlack.$">
+                    </label>
+                    <br>
+                    <label>
+                        Time:
+                        <a ng-show="team == false" ng-click="team = true">(Mostrar)</a> 
+                        <a ng-show="team == true" ng-click="team = false">(Esconder)</a>:
+                        <input ng-model="searchSlack.team_domain">
+                    </label>
+                    <br>
+                    <label>
+                        Usuário:
+                        <a ng-show="slack_user == false" ng-click="slack_user = true">(Mostrar)</a> 
+                        <a ng-show="slack_user == true" ng-click="slack_user = false">(Esconder)</a>:
+                        <input ng-model="searchSlack.user_name">
+                    </label>
+                    <br>
+                    <label>
+                        Ação: 
+                        <a ng-show="action == false" ng-click="action = true">(Mostrar)</a> 
+                        <a ng-show="action == true" ng-click="action = false">(Esconder)</a>:
+                        <input ng-model="searchSlack.event_action">
+                    </label>
+                    <br>
+                    <label>
+                        Horário 
+                        <a ng-show="slack_time == false" ng-click="slack_time = true">(Mostrar)</a> 
+                        <a ng-show="slack_time == true" ng-click="slack_time = false">(Esconder)</a>:  
+                        <input ng-model="searchSlack.event_time">
+                    </label>
+                    <br>
+                    <h3>Quantidade: {{(slacknotifications | filter:searchSlack:strict).length}} </h3>
+                    <table class="table table-bordered table-hover" ts-wrapper>
+                        <thead>
+                            <tr>
+                                <th ts-criteria="team_domain" ng-hide="team == false">Time</th>
+                                <th ts-criteria="user_name" ng-hide="slack_user == false">Usuário</th>
+                                <th ts-criteria="event_action" ng-hide="action == false">Ação</th>
+                                <th ts-criteria="event_time" ng-hide="slack_time == false">Horário</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="slacknotification in slacknotifications | filter:searchSlack:strict" ts-repeat>
+                                <td ng-hide="team == false">{{slacknotification.team_domain}}</td>
+                                <td ng-hide="slack_user == false">{{slacknotification.user_name}}</td>
+                                <td ng-hide="action == false">{{slacknotification.event_action}}</td>
+                                <td ng-hide="slack_time == false">{{slacknotification.event_time | date:"dd/MM/yyyy 'às' h:mma"}}</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
 
@@ -78,6 +197,7 @@
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+    <script src="../js/angular-tablesorter.js"></script>
 	<script src="/controllers/mainController.js"></script>
 </body>
 </html>

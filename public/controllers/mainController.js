@@ -1,4 +1,4 @@
-var teamtracker = angular.module('teamtracker', []);
+var teamtracker = angular.module('teamtracker', ['tableSort']);
 
 function mainController($scope, $http) {
 
