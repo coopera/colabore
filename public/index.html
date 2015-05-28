@@ -125,14 +125,16 @@
                             <th ts-criteria="actor" ng-hide="gh_user == false">Usuário</th>
                             <th ts-criteria="event_name" ng-hide="event == false">Evento</th>
                             <th ts-criteria="event_time" ng-hide="hour == false">Horário</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="notification in notifications | filter:search:strict" ts-repeat>
+                        <tr ng-repeat="notification in notifications | filter:search:strict" class="not-{{$index}}" data-model="{{notification}}" ts-repeat>
                             <td ng-hide="repo == false">{{notification.repo}}</td>
                             <td ng-hide="gh_user == false">{{notification.actor}}</td>
                             <td ng-hide="event == false">{{notification.event_name}}</td>
                             <td ng-hide="hour == false">{{notification.event_time | date:"dd/MM/yyyy 'às' h:mma"}}</td>
+                            <td class="status-{{$index}}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -180,7 +182,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="slacknotification in slacknotifications | filter:searchSlack:strict" ts-repeat>
+                            <tr ng-show="slacknotification.team_domain != slacknotifications[$index - 1].team_domain && slacknotification.user_name != slacknotifications[$index - 1].user_name && slacknotification.event_action != slacknotifications[$index - 1].event_action && slacknotification.event_time != slacknotifications[$index - 1].event_time"
+                            ng-repeat="slacknotification in slacknotifications | filter:searchSlack:strict" ts-repeat>
                                 <td ng-hide="team == false">{{slacknotification.team_domain}}</td>
                                 <td ng-hide="slack_user == false">{{slacknotification.user_name}}</td>
                                 <td ng-hide="action == false">{{slacknotification.event_action}}</td>
